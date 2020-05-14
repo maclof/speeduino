@@ -182,8 +182,16 @@ void idleControl()
   //Check whether the idleUp is active
   if(configPage2.idleUpEnabled == true)
   {
-    if(configPage2.idleUpPolarity == 0) { currentStatus.idleUpActive = !digitalRead(pinIdleUp); } //Normal mode (ground switched)
-    else { currentStatus.idleUpActive = digitalRead(pinIdleUp); } //Inverted mode (5v activates idleUp)
+    // If the fan is on then we should idle up.
+    if (currentStatus.fanOn == true)
+    {
+      currentStatus.idleUpActive = true;
+    }
+    else
+    {
+      if(configPage2.idleUpPolarity == 0) { currentStatus.idleUpActive = !digitalRead(pinIdleUp); } //Normal mode (ground switched)
+      else { currentStatus.idleUpActive = digitalRead(pinIdleUp); } //Inverted mode (5v activates idleUp)
+    }
   }
   else { currentStatus.idleUpActive = false; }
 
